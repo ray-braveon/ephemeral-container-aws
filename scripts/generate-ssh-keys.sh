@@ -1,9 +1,10 @@
 #!/bin/bash
 # generate-ssh-keys.sh - Generate and manage SSH key pairs for EC2
 # Issue #1: AWS Prerequisites and IAM Setup
-# Version: 1.0.0
+# Version: 1.0.1
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Configuration
 readonly KEY_NAME="ephemeral-admin-key"

@@ -1,9 +1,10 @@
 #!/bin/bash
 # check-prerequisites.sh - Validate AWS CLI and system prerequisites
 # Issue #1: AWS Prerequisites and IAM Setup
-# Version: 1.0.0
+# Version: 1.0.1
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Color codes
 readonly GREEN='\033[0;32m'

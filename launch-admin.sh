@@ -1,9 +1,10 @@
 #!/bin/bash
 # launch-admin.sh - Main orchestrator for ephemeral AWS container system
 # Issue #1: AWS Prerequisites and IAM Setup
-# Version: 1.0.0
+# Version: 1.0.1
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Configuration
 readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -39,17 +40,28 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $*" | tee -a "${LOG_FILE}"
 }
 
-# Cleanup function
+# Track created resources for rollback
+declare -a ROLLBACK_STACK=()
+
+# Cleanup function with rollback
 cleanup() {
     local exit_code=$?
     if [[ ${exit_code} -ne 0 ]]; then
         log_error "Launch failed with exit code ${exit_code}"
         log_info "Check log file for details: ${LOG_FILE}"
+        
+        # Execute rollback
+        if [[ ${#ROLLBACK_STACK[@]} -gt 0 ]]; then
+            log_info "Rolling back changes..."
+            for ((i=${#ROLLBACK_STACK[@]}-1; i>=0; i--)); do
+                log_info "Rollback: ${ROLLBACK_STACK[i]}"
+                eval "${ROLLBACK_STACK[i]}" || true
+            done
+        fi
     fi
-    # Additional cleanup tasks will be added here
 }
 
-trap cleanup EXIT
+trap cleanup EXIT ERR INT TERM
 
 # Main execution
 main() {

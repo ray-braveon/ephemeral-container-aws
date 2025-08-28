@@ -1,9 +1,10 @@
 #!/bin/bash
 # manage-security-group.sh - Manage dynamic security groups for SSH access
 # Issue #1: AWS Prerequisites and IAM Setup
-# Version: 1.0.0
+# Version: 1.0.1
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Configuration
 readonly SG_NAME="ephemeral-admin-sg"
@@ -29,6 +30,22 @@ log_warn() {
     echo -e "  ${YELLOW}⚠${NC} $*"
 }
 
+# Validate IP address format
+validate_ip() {
+    local ip="$1"
+    local stat=1
+    
+    if [[ "${ip}" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        local IFS='.'
+        local -a ip_octets=($ip)
+        [[ ${ip_octets[0]} -le 255 && ${ip_octets[1]} -le 255 && \
+           ${ip_octets[2]} -le 255 && ${ip_octets[3]} -le 255 ]]
+        stat=$?
+    fi
+    
+    return $stat
+}
+
 # Detect current public IP
 detect_public_ip() {
     log_info "Detecting current public IP address"
@@ -44,14 +61,14 @@ detect_public_ip() {
         ip=$(curl -s --max-time 5 "${service}" 2>/dev/null | tr -d '[:space:]')
         
         # Validate IP format
-        if [[ "${ip}" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
+        if validate_ip "${ip}"; then
             log_success "Detected IP: ${ip}"
             echo "${ip}"
             return 0
         fi
     done
     
-    echo "Error: Failed to detect public IP"
+    echo "Error: Failed to detect valid public IP"
     return 1
 }
 

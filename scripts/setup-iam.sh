@@ -1,9 +1,10 @@
 #!/bin/bash
 # setup-iam.sh - Create and configure IAM roles and policies
 # Issue #1: AWS Prerequisites and IAM Setup
-# Version: 1.0.0
+# Version: 1.0.1
 
 set -euo pipefail
+IFS=$'\n\t'
 
 # Configuration
 readonly ROLE_NAME="SystemAdminTestingRole"
@@ -259,8 +260,29 @@ validate_setup() {
     return 0
 }
 
+# Validate AWS credentials before IAM operations
+validate_credentials() {
+    log_info "Validating AWS credentials"
+    
+    if ! aws sts get-caller-identity &>/dev/null; then
+        echo "Error: AWS credentials not properly configured"
+        echo "Run: aws configure"
+        return 1
+    fi
+    
+    local account_id
+    account_id=$(aws sts get-caller-identity --query Account --output text)
+    log_success "Credentials valid for account: ${account_id}"
+    return 0
+}
+
 # Main execution
 main() {
+    # Validate credentials first
+    if ! validate_credentials; then
+        return 1
+    fi
+    
     echo "=== IAM Setup ==="
     echo
     
