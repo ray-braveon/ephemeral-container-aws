@@ -1,0 +1,1239 @@
+{
+  "phases": {
+    "STRAT": {
+      "name": "Strategic Planning",
+      "description": "Strategic analysis and planning phase",
+      "duration": "2-4 weeks",
+      "outputs": ["strategy_document", "roadmap", "goals"],
+      "required_roles": ["coordinator", "product-strategist"],
+      "comment": "// CAUTION: business-analyst role not available, needs development",
+      "dependencies": [],
+      "success_criteria": ["stakeholder_approval", "clear_objectives"],
+      "model": "opus"
+    },
+    "REQ": {
+      "name": "Requirements",
+      "description": "Requirements gathering and analysis",
+      "duration": "1-2 weeks",
+      "outputs": ["requirements_document", "user_stories", "acceptance_criteria"],
+      "required_roles": ["product-manager", "scrum-master"],
+      "comment": "// Using product-manager instead of business-analyst (not available), product-owner functionality covered by product-manager",
+      "dependencies": ["STRAT"],
+      "success_criteria": ["requirements_signed_off", "testable_criteria"],
+      "model": "sonnet"
+    },
+    "ARCH": {
+      "name": "Architecture",
+      "description": "System and solution architecture design",
+      "duration": "1-2 weeks",
+      "outputs": ["architecture_document", "design_patterns", "tech_stack"],
+      "required_roles": ["system-architect-enhanced", "software-architect"],
+      "comment": "// Using system-architect-enhanced and software-architect instead of generic architect and tech-lead",
+      "dependencies": ["REQ"],
+      "success_criteria": ["architecture_review_passed", "scalability_confirmed"],
+      "model": "opus"
+    },
+    "PLAN": {
+      "name": "Planning",
+      "description": "Detailed project and sprint planning",
+      "duration": "3-5 days",
+      "outputs": ["project_plan", "sprint_backlog", "resource_allocation"],
+      "required_roles": ["scrum-master", "coordinator"],
+      "dependencies": ["ARCH", "REQ"],
+      "success_criteria": ["team_commitment", "clear_deliverables"],
+      "model": "sonnet"
+    },
+    "DESIGN": {
+      "name": "Design",
+      "description": "User interface and experience design",
+      "duration": "1-2 weeks",
+      "outputs": ["design_mockups", "design_system", "user_flows"],
+      "required_roles": ["ux-engineer"],
+      "comment": "// DESIGN phase added based on our workflow - not in original JSON",
+      "dependencies": ["REQ", "ARCH"],
+      "success_criteria": ["design_approved", "accessibility_validated"],
+      "model": "sonnet"
+    },
+    "DEV": {
+      "name": "Development",
+      "description": "Code development and implementation",
+      "duration": "1-4 weeks",
+      "outputs": ["source_code", "unit_tests", "documentation"],
+      "required_roles": ["implementation-specialist", "data-scientist"],
+      "comment": "// Using implementation-specialist as primary developer, data-scientist for ML/AI features",
+      "cloud_specialists": ["aws-expert", "azure-specialist", "gcp-expert", "vmware-engineer"],
+      "infrastructure_roles": ["iac-developer"],
+      "dependencies": ["PLAN", "DESIGN"],
+      "success_criteria": ["code_complete", "tests_passing"],
+      "model": "sonnet"
+    },
+    "RW": {
+      "name": "Rework",
+      "description": "Code revision and improvement iterations",
+      "duration": "2-5 days",
+      "outputs": ["revised_code", "updated_tests", "refactoring"],
+      "required_roles": ["implementation-specialist"],
+      "comment": "// Using implementation-specialist for rework, no separate rework specialist available",
+      "dependencies": ["DEV", "CR"],
+      "success_criteria": ["issues_resolved", "quality_improved"],
+      "model": "sonnet"
+    },
+    "CR": {
+      "name": "Code Review",
+      "description": "Peer code review and quality assessment",
+      "duration": "1-2 days",
+      "outputs": ["review_comments", "approval", "improvement_suggestions"],
+      "required_roles": ["code-reviewer"],
+      "comment": "// Using code-reviewer, tech-lead and senior-developer roles not separately defined",
+      "dependencies": ["DEV"],
+      "success_criteria": ["code_approved", "standards_met"],
+      "model": "sonnet"
+    },
+    "VALIDATE": {
+      "name": "Validation",
+      "description": "Requirements validation and compliance check",
+      "duration": "1-2 days",
+      "outputs": ["validation_report", "compliance_checklist", "requirement_coverage"],
+      "required_roles": ["requirement-validator"],
+      "comment": "// VALIDATE phase from our workflow - not in original JSON",
+      "dependencies": ["DEV", "CR"],
+      "success_criteria": ["requirements_met", "compliance_verified"],
+      "model": "sonnet"
+    },
+    "PR": {
+      "name": "Product Review",
+      "description": "Product review and business validation",
+      "duration": "1-2 days",
+      "outputs": ["product_approval", "user_feedback", "business_validation"],
+      "required_roles": ["product-reviewer"],
+      "comment": "// Using product-reviewer, maintainer role not separately defined",
+      "dependencies": ["CR", "VALIDATE"],
+      "success_criteria": ["product_approved", "business_value_confirmed"],
+      "model": "sonnet"
+    },
+    "POLISH": {
+      "name": "Polish",
+      "description": "UI/UX refinement and final touches",
+      "duration": "2-3 days",
+      "outputs": ["polished_ui", "refined_ux", "final_designs"],
+      "required_roles": ["ui-polisher"],
+      "comment": "// POLISH phase from our workflow - not in original JSON",
+      "dependencies": ["PR"],
+      "success_criteria": ["ui_refined", "ux_optimized"],
+      "model": "sonnet"
+    },
+    "QA": {
+      "name": "Quality Assurance",
+      "description": "Testing and quality validation",
+      "duration": "3-7 days",
+      "outputs": ["test_results", "bug_reports", "quality_metrics"],
+      "required_roles": ["project-qa-agent"],
+      "comment": "// Using project-qa-agent, test-automation-specialist not separately defined",
+      "dependencies": ["DEV", "PR", "POLISH"],
+      "success_criteria": ["tests_passed", "acceptance_criteria_met"],
+      "model": "sonnet"
+    },
+    "SEC": {
+      "name": "Security Review",
+      "description": "Security analysis and vulnerability assessment",
+      "duration": "1-3 days",
+      "outputs": ["security_report", "vulnerability_scan", "remediation_plan"],
+      "required_roles": ["security-architect", "incident-response-lead"],
+      "comment": "// Using security-architect and incident-response-lead, penetration-tester not separately defined",
+      "specialized_roles": ["ransomware-specialist"],
+      "dependencies": ["DEV", "QA"],
+      "success_criteria": ["no_critical_vulnerabilities", "security_approved"],
+      "model": "sonnet"
+    },
+    "DEPLOY": {
+      "name": "Deployment",
+      "description": "Production deployment and release",
+      "duration": "2-8 hours",
+      "outputs": ["deployed_application", "release_notes", "rollback_plan"],
+      "required_roles": ["iac-developer", "compliance-officer"],
+      "comment": "// CAUTION: devops-engineer and release-manager roles not available, using iac-developer for infrastructure",
+      "cloud_deployment_roles": ["aws-expert", "azure-specialist", "gcp-expert"],
+      "dependencies": ["QA", "SEC"],
+      "success_criteria": ["deployment_successful", "health_checks_passed"],
+      "model": "sonnet"
+    },
+    "OPS": {
+      "name": "Operations",
+      "description": "Monitoring, maintenance and support",
+      "duration": "ongoing",
+      "outputs": ["monitoring_setup", "alerts", "operational_procedures"],
+      "required_roles": ["coordinator", "compliance-officer"],
+      "comment": "// CAUTION: sre and operations-engineer roles not available, needs development",
+      "infrastructure_support": ["vmware-engineer", "aws-expert", "azure-specialist", "gcp-expert"],
+      "dependencies": ["DEPLOY"],
+      "success_criteria": ["system_stable", "monitoring_active"],
+      "model": "sonnet"
+    }
+  },
+  "roles": {
+    "coordinator": {
+      "name": "Workflow Coordinator",
+      "type": "coordinator",
+      "model": "sonnet",
+      "max_instances": 1,
+      "capabilities": [
+        "workflow_orchestration",
+        "agent_coordination",
+        "progress_tracking",
+        "stakeholder_communication",
+        "resource_allocation",
+        "risk_management"
+      ],
+      "primary_phases": ["PLAN", "OPS"],
+      "secondary_phases": ["STRAT", "REQ"],
+      "escalation_authority": ["phase_transitions", "resource_conflicts"],
+      "delegation_allowed": true,
+      "approval_authority": ["workflow_changes", "phase_gates"],
+      "actual_agent": "coordinator.md"
+    },
+    "scrum-master": {
+      "name": "Scrum Master",
+      "type": "process",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "agile_facilitation",
+        "sprint_planning",
+        "impediment_removal",
+        "team_coaching",
+        "ceremony_facilitation",
+        "github_project_management"
+      ],
+      "primary_phases": ["PLAN", "REQ"],
+      "secondary_phases": ["DEV", "QA"],
+      "escalation_authority": ["sprint_scope_changes"],
+      "delegation_allowed": true,
+      "approval_authority": ["sprint_commitments"],
+      "actual_agent": "scrum-master.md"
+    },
+    "product-manager": {
+      "name": "Product Manager",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "requirements_definition",
+        "user_research",
+        "feature_prioritization",
+        "roadmap_planning",
+        "stakeholder_management"
+      ],
+      "primary_phases": ["REQ"],
+      "secondary_phases": ["STRAT", "VALIDATE"],
+      "escalation_authority": ["requirement_conflicts"],
+      "delegation_allowed": false,
+      "approval_authority": ["feature_approval"],
+      "actual_agent": "product-manager.md"
+    },
+    "product-strategist": {
+      "name": "Product Strategist",
+      "type": "specialist",
+      "model": "opus",
+      "max_instances": 1,
+      "capabilities": [
+        "gtm_strategy",
+        "competitive_analysis",
+        "pricing_strategies",
+        "market_research",
+        "business_model_development"
+      ],
+      "primary_phases": ["STRAT"],
+      "secondary_phases": ["REQ"],
+      "escalation_authority": ["strategic_decisions"],
+      "delegation_allowed": true,
+      "approval_authority": ["strategy_approval"],
+      "actual_agent": "product-strategist.md"
+    },
+    "system-architect-enhanced": {
+      "name": "System Architect Enhanced",
+      "type": "specialist",
+      "model": "opus",
+      "max_instances": 2,
+      "capabilities": [
+        "system_design",
+        "architecture_patterns",
+        "technology_selection",
+        "scalability_planning",
+        "integration_design",
+        "api_design"
+      ],
+      "primary_phases": ["ARCH"],
+      "secondary_phases": ["STRAT", "REQ"],
+      "escalation_authority": ["architectural_decisions"],
+      "delegation_allowed": true,
+      "approval_authority": ["architecture_changes"],
+      "actual_agent": "system-architect-enhanced.md"
+    },
+    "software-architect": {
+      "name": "Software Architect",
+      "type": "specialist",
+      "model": "opus",
+      "max_instances": 2,
+      "capabilities": [
+        "design_patterns",
+        "microservices_architecture",
+        "api_governance",
+        "code_architecture",
+        "technical_standards"
+      ],
+      "primary_phases": ["ARCH"],
+      "secondary_phases": ["DEV", "CR"],
+      "escalation_authority": ["technical_decisions"],
+      "delegation_allowed": true,
+      "approval_authority": ["design_approval"],
+      "actual_agent": "software-architect.md"
+    },
+    "ux-engineer": {
+      "name": "UX Engineer",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 3,
+      "capabilities": [
+        "user_experience_design",
+        "ui_design",
+        "design_systems",
+        "accessibility_compliance",
+        "user_research"
+      ],
+      "primary_phases": ["DESIGN"],
+      "secondary_phases": ["REQ", "POLISH"],
+      "escalation_authority": ["design_conflicts"],
+      "delegation_allowed": false,
+      "approval_authority": ["design_approval"],
+      "actual_agent": "ux-engineer.md"
+    },
+    "implementation-specialist": {
+      "name": "Implementation Specialist",
+      "type": "worker",
+      "model": "sonnet",
+      "max_instances": 8,
+      "capabilities": [
+        "code_generation",
+        "algorithm_implementation",
+        "technical_problem_solving",
+        "performance_optimization",
+        "debugging",
+        "refactoring",
+        "full_stack_development"
+      ],
+      "primary_phases": ["DEV", "RW"],
+      "secondary_phases": ["ARCH"],
+      "escalation_authority": [],
+      "delegation_allowed": false,
+      "approval_authority": [],
+      "actual_agent": "implementation-specialist.md"
+    },
+    "code-reviewer": {
+      "name": "Code Reviewer",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 4,
+      "capabilities": [
+        "code_quality_assessment",
+        "security_validation",
+        "standards_compliance",
+        "best_practices_enforcement",
+        "performance_review"
+      ],
+      "primary_phases": ["CR"],
+      "secondary_phases": ["DEV"],
+      "escalation_authority": ["code_quality_issues"],
+      "delegation_allowed": false,
+      "approval_authority": ["code_approval"],
+      "actual_agent": "code-reviewer.md"
+    },
+    "requirement-validator": {
+      "name": "Requirement Validator",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "requirements_validation",
+        "compliance_checking",
+        "coverage_analysis",
+        "acceptance_criteria_validation"
+      ],
+      "primary_phases": ["VALIDATE"],
+      "secondary_phases": ["QA"],
+      "escalation_authority": ["requirement_violations"],
+      "delegation_allowed": false,
+      "approval_authority": ["validation_approval"],
+      "actual_agent": "requirement-validator.md"
+    },
+    "product-reviewer": {
+      "name": "Product Reviewer",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "business_validation",
+        "user_acceptance",
+        "value_assessment",
+        "feature_validation"
+      ],
+      "primary_phases": ["PR"],
+      "secondary_phases": ["QA"],
+      "escalation_authority": ["product_issues"],
+      "delegation_allowed": false,
+      "approval_authority": ["product_approval"],
+      "actual_agent": "product-reviewer.md"
+    },
+    "ui-polisher": {
+      "name": "UI Polisher",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "ui_refinement",
+        "ux_optimization",
+        "design_system_compliance",
+        "visual_consistency",
+        "interaction_polish"
+      ],
+      "primary_phases": ["POLISH"],
+      "secondary_phases": ["DESIGN"],
+      "escalation_authority": [],
+      "delegation_allowed": false,
+      "approval_authority": ["ui_approval"],
+      "actual_agent": "ui-polisher.md"
+    },
+    "project-qa-agent": {
+      "name": "Project QA Agent",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 4,
+      "capabilities": [
+        "e2e_testing",
+        "quality_validation",
+        "deployment_readiness",
+        "acceptance_testing",
+        "regression_testing"
+      ],
+      "primary_phases": ["QA"],
+      "secondary_phases": ["VALIDATE"],
+      "escalation_authority": ["quality_gate_failures"],
+      "delegation_allowed": false,
+      "approval_authority": ["quality_sign_off"],
+      "actual_agent": "project-qa-agent.md"
+    },
+    "security-architect": {
+      "name": "Security Architect",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "security_assessment",
+        "vulnerability_analysis",
+        "compliance_validation",
+        "threat_modeling",
+        "security_testing",
+        "siem_configuration"
+      ],
+      "primary_phases": ["SEC"],
+      "secondary_phases": ["ARCH", "QA"],
+      "escalation_authority": ["security_violations"],
+      "delegation_allowed": false,
+      "approval_authority": ["security_clearance"],
+      "actual_agent": "security-architect.md"
+    },
+    "incident-response-lead": {
+      "name": "Incident Response Lead",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "incident_forensics",
+        "playbook_development",
+        "soar_platforms",
+        "threat_hunting",
+        "incident_coordination"
+      ],
+      "primary_phases": ["SEC", "OPS"],
+      "secondary_phases": [],
+      "escalation_authority": ["security_incidents"],
+      "delegation_allowed": true,
+      "approval_authority": ["incident_response"],
+      "actual_agent": "incident-response-lead.md"
+    },
+    "ransomware-specialist": {
+      "name": "Ransomware Specialist",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 1,
+      "capabilities": [
+        "ransomware_defense",
+        "backup_strategies",
+        "recovery_planning",
+        "threat_prevention"
+      ],
+      "primary_phases": ["SEC"],
+      "secondary_phases": ["OPS"],
+      "escalation_authority": ["ransomware_threats"],
+      "delegation_allowed": false,
+      "approval_authority": ["recovery_plans"],
+      "actual_agent": "ransomware-specialist.md"
+    },
+    "compliance-officer": {
+      "name": "Compliance Officer",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "regulatory_compliance",
+        "audit_validation",
+        "control_mapping",
+        "policy_enforcement",
+        "compliance_reporting"
+      ],
+      "primary_phases": ["DEPLOY", "OPS"],
+      "secondary_phases": ["SEC", "VALIDATE"],
+      "escalation_authority": ["compliance_violations"],
+      "delegation_allowed": false,
+      "approval_authority": ["compliance_approval"],
+      "actual_agent": "compliance-officer.md"
+    },
+    "data-scientist": {
+      "name": "Data Scientist",
+      "type": "specialist",
+      "model": "opus",
+      "max_instances": 2,
+      "capabilities": [
+        "data_analysis",
+        "machine_learning",
+        "statistical_modeling",
+        "data_visualization",
+        "predictive_analytics",
+        "model_development"
+      ],
+      "primary_phases": ["DEV"],
+      "secondary_phases": ["REQ", "QA"],
+      "escalation_authority": ["model_performance_issues"],
+      "delegation_allowed": false,
+      "approval_authority": ["model_validation"],
+      "actual_agent": "data-scientist.md"
+    },
+    "financial-modeler": {
+      "name": "Financial Modeler",
+      "type": "specialist",
+      "model": "opus",
+      "max_instances": 1,
+      "capabilities": [
+        "financial_modeling",
+        "quantitative_analysis",
+        "forecasting",
+        "valuation_analysis",
+        "risk_assessment"
+      ],
+      "primary_phases": ["STRAT"],
+      "secondary_phases": ["REQ"],
+      "escalation_authority": ["financial_decisions"],
+      "delegation_allowed": false,
+      "approval_authority": ["financial_models"],
+      "actual_agent": "financial-modeler.md"
+    },
+    "iac-developer": {
+      "name": "Infrastructure as Code Developer",
+      "type": "specialist",
+      "model": "sonnet",
+      "max_instances": 3,
+      "capabilities": [
+        "terraform_development",
+        "ansible_automation",
+        "infrastructure_deployment",
+        "multi_cloud_iac",
+        "configuration_management"
+      ],
+      "primary_phases": ["DEV", "DEPLOY"],
+      "secondary_phases": ["ARCH"],
+      "escalation_authority": ["infrastructure_failures"],
+      "delegation_allowed": false,
+      "approval_authority": ["infrastructure_changes"],
+      "actual_agent": "iac-developer.md"
+    },
+    "aws-expert": {
+      "name": "AWS Expert",
+      "type": "cloud_specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "aws_architecture",
+        "migration_planning",
+        "cost_optimization",
+        "aws_services",
+        "cloud_formation"
+      ],
+      "primary_phases": ["DEV", "DEPLOY", "OPS"],
+      "secondary_phases": ["ARCH"],
+      "escalation_authority": ["aws_issues"],
+      "delegation_allowed": false,
+      "approval_authority": ["aws_deployments"],
+      "actual_agent": "aws-expert.md"
+    },
+    "azure-specialist": {
+      "name": "Azure Specialist",
+      "type": "cloud_specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "azure_architecture",
+        "hybrid_cloud",
+        "azure_governance",
+        "sentinel_configuration",
+        "azure_services"
+      ],
+      "primary_phases": ["DEV", "DEPLOY", "OPS"],
+      "secondary_phases": ["ARCH"],
+      "escalation_authority": ["azure_issues"],
+      "delegation_allowed": false,
+      "approval_authority": ["azure_deployments"],
+      "actual_agent": "azure-specialist.md"
+    },
+    "gcp-expert": {
+      "name": "GCP Expert",
+      "type": "cloud_specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "gcp_architecture",
+        "bigquery",
+        "gke_management",
+        "data_engineering",
+        "ml_services"
+      ],
+      "primary_phases": ["DEV", "DEPLOY", "OPS"],
+      "secondary_phases": ["ARCH"],
+      "escalation_authority": ["gcp_issues"],
+      "delegation_allowed": false,
+      "approval_authority": ["gcp_deployments"],
+      "actual_agent": "gcp-expert.md"
+    },
+    "vmware-engineer": {
+      "name": "VMware Engineer",
+      "type": "infrastructure_specialist",
+      "model": "sonnet",
+      "max_instances": 2,
+      "capabilities": [
+        "vsphere_management",
+        "esxi_configuration",
+        "vcenter_administration",
+        "virtualization",
+        "infrastructure_management"
+      ],
+      "primary_phases": ["OPS"],
+      "secondary_phases": ["DEPLOY"],
+      "escalation_authority": ["vmware_issues"],
+      "delegation_allowed": false,
+      "approval_authority": ["infrastructure_changes"],
+      "actual_agent": "vmware-engineer.md"
+    }
+  },
+  "missing_roles_needing_development": {
+    "comment": "// These roles are referenced in the original JSON but not available in our agent set",
+    "business-analyst": {
+      "needed_for": ["STRAT", "REQ"],
+      "suggested_capabilities": ["business_process_analysis", "requirements_elicitation", "stakeholder_interviews"],
+      "priority": "high"
+    },
+    "devops-engineer": {
+      "needed_for": ["DEPLOY", "OPS"],
+      "suggested_capabilities": ["ci_cd_pipelines", "deployment_automation", "monitoring_setup", "containerization"],
+      "priority": "critical",
+      "workaround": "Currently using iac-developer and cloud specialists"
+    },
+    "release-manager": {
+      "needed_for": ["DEPLOY"],
+      "suggested_capabilities": ["release_coordination", "deployment_planning", "rollback_procedures"],
+      "priority": "medium"
+    },
+    "sre": {
+      "needed_for": ["OPS"],
+      "suggested_capabilities": ["site_reliability", "performance_monitoring", "incident_management"],
+      "priority": "high"
+    },
+    "operations-engineer": {
+      "needed_for": ["OPS"],
+      "suggested_capabilities": ["system_monitoring", "maintenance_procedures", "operational_support"],
+      "priority": "high"
+    },
+    "penetration-tester": {
+      "needed_for": ["SEC"],
+      "suggested_capabilities": ["vulnerability_testing", "exploit_development", "security_assessment"],
+      "priority": "medium",
+      "partial_coverage": "security-architect covers some capabilities"
+    },
+    "test-automation-specialist": {
+      "needed_for": ["QA"],
+      "suggested_capabilities": ["automated_testing", "test_framework_development", "ci_integration"],
+      "priority": "medium",
+      "partial_coverage": "project-qa-agent covers e2e testing"
+    }
+  },
+  "workflow_types": {
+    "feature_development": {
+      "name": "Feature Development",
+      "type": "development",
+      "phases": ["REQ", "ARCH", "PLAN", "DESIGN", "DEV", "CR", "VALIDATE", "PR", "POLISH", "QA", "DEPLOY"],
+      "iteration_allowed": ["RW"],
+      "max_iterations": 5,
+      "default_duration": "2-4 weeks",
+      "priority": "P2",
+      "required_approvals": ["requirements", "architecture", "security", "qa"]
+    },
+    "bug_fix": {
+      "name": "Bug Fix",
+      "type": "maintenance",
+      "phases": ["REQ", "DEV", "CR", "QA", "DEPLOY"],
+      "iteration_allowed": ["RW"],
+      "max_iterations": 3,
+      "default_duration": "1-3 days",
+      "priority": "P1-P3",
+      "required_approvals": ["code_review", "qa"]
+    },
+    "infrastructure_change": {
+      "name": "Infrastructure Change",
+      "type": "infrastructure",
+      "phases": ["REQ", "ARCH", "PLAN", "DEV", "CR", "SEC", "QA", "DEPLOY", "OPS"],
+      "iteration_allowed": ["RW"],
+      "max_iterations": 3,
+      "default_duration": "1-2 weeks",
+      "priority": "P2",
+      "required_approvals": ["architecture", "security", "operations"],
+      "specialized_agents": ["iac-developer", "aws-expert", "azure-specialist", "gcp-expert"]
+    },
+    "security_incident": {
+      "name": "Security Incident Response",
+      "type": "security",
+      "phases": ["SEC", "DEV", "CR", "QA", "DEPLOY", "OPS"],
+      "iteration_allowed": [],
+      "max_iterations": 1,
+      "default_duration": "1-24 hours",
+      "priority": "P0",
+      "required_approvals": ["security", "operations"],
+      "specialized_agents": ["incident-response-lead", "ransomware-specialist", "security-architect"]
+    },
+    "compliance_audit": {
+      "name": "Compliance Audit",
+      "type": "compliance",
+      "phases": ["REQ", "SEC", "VALIDATE", "PR", "OPS"],
+      "iteration_allowed": ["RW"],
+      "max_iterations": 2,
+      "default_duration": "1-4 weeks",
+      "priority": "P1",
+      "required_approvals": ["security", "compliance", "operations"],
+      "specialized_agents": ["compliance-officer", "security-architect"]
+    },
+    "strategic_planning": {
+      "name": "Strategic Planning",
+      "type": "business",
+      "phases": ["STRAT", "REQ", "PLAN"],
+      "iteration_allowed": [],
+      "max_iterations": 1,
+      "default_duration": "2-4 weeks",
+      "priority": "P1",
+      "required_approvals": ["executive", "stakeholder"],
+      "specialized_agents": ["product-strategist", "financial-modeler"]
+    },
+    "architecture_review": {
+      "name": "Architecture Review",
+      "type": "technical",
+      "phases": ["ARCH", "CR", "PR"],
+      "iteration_allowed": ["RW"],
+      "max_iterations": 3,
+      "default_duration": "1 week",
+      "priority": "P2",
+      "required_approvals": ["architecture", "tech_lead"],
+      "specialized_agents": ["system-architect-enhanced", "software-architect"]
+    },
+    "release_cycle": {
+      "name": "Release Cycle",
+      "type": "release",
+      "phases": ["PLAN", "DEV", "CR", "VALIDATE", "PR", "POLISH", "QA", "SEC", "DEPLOY", "OPS"],
+      "iteration_allowed": ["RW"],
+      "max_iterations": 5,
+      "default_duration": "2-week sprint",
+      "priority": "P1",
+      "required_approvals": ["all_gates"]
+    }
+  },
+  "workflow_orchestration": {
+    "phase_transitions": {
+      "automatic": ["DEV->CR", "CR->VALIDATE", "VALIDATE->PR", "PR->POLISH"],
+      "manual_approval": ["STRAT->REQ", "ARCH->PLAN", "SEC->DEPLOY", "QA->DEPLOY"],
+      "conditional": {
+        "RW->DEV": "if_rework_iterations_remaining",
+        "QA->RW": "if_quality_gates_failed",
+        "SEC->RW": "if_security_vulnerabilities_found",
+        "VALIDATE->RW": "if_requirements_not_met"
+      }
+    },
+    "escalation_rules": {
+      "phase_timeout": {
+        "action": "escalate_to_coordinator",
+        "timeout_multiplier": 1.5
+      },
+      "failure_threshold": {
+        "action": "escalate_to_next_level",
+        "max_failures": 5
+      },
+      "quality_gate_failure": {
+        "action": "mandatory_rework",
+        "requires_approval": true
+      }
+    },
+    "success_criteria": {
+      "phase_completion": "all_outputs_delivered",
+      "quality_gates": "acceptance_criteria_met",
+      "stakeholder_approval": "sign_off_received",
+      "technical_validation": "tests_passing"
+    }
+  },
+  "scripts_mapping": {
+    "workflow_management": {
+      "advance_phase": "Phase transition management",
+      "phase_orchestrator": "9-phase workflow orchestration",
+      "handoff": "Agent-to-agent transitions",
+      "agent_orchestrator": "Dynamic agent allocation"
+    },
+    "state_management": {
+      "check_state": "Current state verification",
+      "state_manager": "Enhanced state management",
+      "validate_state": "State validation"
+    },
+    "quality_assurance": {
+      "run_tests": "Test execution",
+      "create_regression": "Regression test generation",
+      "validate": "Multi-criteria validation"
+    },
+    "context_management": {
+      "context_monitor": "Token usage monitoring",
+      "compact-context.sh": "Context optimization",
+      "smart-compact-hook.sh": "Intelligent compaction"
+      }
+  },
+  "phase_workflows": {
+    "STRAT": {
+      "workflow_files": {
+        "comment": "// CAUTION: STRAT-workflow.md missing, needs development",
+        "existing": [],
+        "required": ["STRAT-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["coordinator.md", "product-strategist.md"],
+        "document_templates": ["strategy_document.md", "roadmap.md"],
+        "comment": "// Strategy templates need development"
+      },
+      "scripts": {
+        "initialization": ["plan_initiate"],
+        "analysis": ["agent_orchestrator"],
+        "coordination": ["handoff", "advance_phase"],
+        "state_management": ["check_state", "state_manager"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "ref-tools"],
+        "analysis_tools": ["market_analysis", "competitor_analysis"],
+        "comment": "// Strategic analysis tools need development"
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction"],
+        "validation": []
+      }
+    },
+    "REQ": {
+      "workflow_files": {
+        "existing": ["phase-workflows/REQ-workflow.md"],
+        "supporting": ["collaboration-architecture-user-flows.md"]
+      },
+      "templates": {
+        "agent_templates": ["product-manager.md", "scrum-master.md"],
+        "document_templates": ["requirements_document.md", "user_stories.md"]
+      },
+      "scripts": {
+        "initialization": ["create_issue", "init_issue_state"],
+        "requirements": ["requirements_collector"],
+        "comment": "// CAUTION: requirements_collector script missing",
+        "coordination": ["handoff", "switch-agent.sh"],
+        "state_management": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "github"],
+        "documentation": ["ref-tools"],
+        "tracking": ["log_issue", "log_interaction"]
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction"],
+        "validation": ["validate_requirements"]
+      }
+    },
+    "PLAN": {
+      "workflow_files": {
+        "comment": "// CAUTION: PLAN-workflow.md missing, needs development",
+        "existing": ["plan-phase-collaboration-design.md"],
+        "required": ["PLAN-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["scrum-master.md", "coordinator.md"],
+        "planning_templates": ["sprint_plan.md", "resource_allocation.md"]
+      },
+      "scripts": {
+        "initialization": ["plan_initiate"],
+        "synthesis": ["plan_synthesis"],
+        "finalization": ["plan_finalize"],
+        "coordination": ["agent_orchestrator", "handoff"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "github"],
+        "planning_tools": ["sprint_planner", "resource_allocator"],
+        "comment": "// Planning tools need development"
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction"],
+        "validation": ["validate_plan"]
+      }
+    },
+    "DESIGN": {
+      "workflow_files": {
+        "comment": "// CAUTION: DESIGN-workflow.md missing, needs development",
+        "existing": [
+          "collaboration-architecture-design.md",
+          "collaboration-architecture-style-guide.md",
+          "plan-collaboration-style-guide.md",
+          "plan-collaboration-ui-specs.md"
+        ],
+        "required": ["DESIGN-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["ux-engineer.md"],
+        "design_templates": ["design_system.md", "ui_components.md"]
+      },
+      "scripts": {
+        "design": ["design_validator"],
+        "comment": "// CAUTION: design_validator script missing",
+        "coordination": ["handoff", "switch-agent.sh"],
+        "state_management": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena"],
+        "design_tools": ["figma_integration", "sketch_integration"],
+        "comment": "// Design tool integrations need development"
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction"],
+        "validation": ["validate_design"]
+      }
+    },
+    "ARCH": {
+      "workflow_files": {
+        "comment": "// CAUTION: ARCH-workflow.md missing, needs development",
+        "existing": [
+          "multi-domain-architecture.md",
+          "tech-stack-specification.md",
+          "infrastructure-requirements.md",
+          "orchestration-api-spec.md"
+        ],
+        "required": ["ARCH-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["system-architect-enhanced.md", "software-architect.md"],
+        "architecture_templates": ["architecture_document.md", "design_patterns.md"]
+      },
+      "scripts": {
+        "architecture": ["arch_validator", "dependency_analyzer"],
+        "comment": "// CAUTION: arch_validator and dependency_analyzer scripts missing",
+        "coordination": ["handoff", "switch-agent.sh"],
+        "state_management": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "ref-tools"],
+        "architecture_tools": ["plantuml", "drawio"],
+        "analysis": ["dependency_check", "security_scan"]
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction"],
+        "validation": ["validate_architecture"]
+      }
+    },
+    "DEV": {
+      "workflow_files": {
+        "comment": "// CAUTION: DEV-workflow.md missing, needs development",
+        "existing": ["collaboration-implementation-summary.md"],
+        "required": ["DEV-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["implementation-specialist.md"],
+        "cloud_templates": ["aws-expert.md", "azure-specialist.md", "gcp-expert.md"],
+        "code_templates": ["boilerplate", "test_templates"]
+      },
+      "scripts": {
+        "development": ["init_dev_env", "setup_dependencies"],
+        "testing": ["run_tests", "create_regression"],
+        "git": ["git_safety", "commit_helper"],
+        "state": ["check_state", "update_state", "validate_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "github", "semgrep"],
+        "development_tools": ["linters", "formatters"],
+        "testing_tools": ["pytest", "jest", "unittest"]
+      },
+      "hooks": {
+        "pre_phase": ["git_safety"],
+        "post_phase": ["log_interaction", "run_tests"],
+        "git_hooks": ["pre-commit", "commit-msg"]
+      }
+    },
+    "RW": {
+      "workflow_files": {
+        "comment": "// Rework phase uses DEV workflow",
+        "existing": [],
+        "required": []
+      },
+      "templates": {
+        "agent_templates": ["implementation-specialist.md"],
+        "rework_templates": ["rework_checklist.md"]
+      },
+      "scripts": {
+        "rework": ["load_feedback", "apply_feedback"],
+        "testing": ["run_tests", "validate"],
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "github", "semgrep"],
+        "debugging_tools": ["debugger", "profiler"]
+      },
+      "hooks": {
+        "pre_phase": ["load_feedback"],
+        "post_phase": ["log_interaction", "run_tests"],
+        "validation": ["validate_rework"]
+      }
+    },
+    "CR": {
+      "workflow_files": {
+        "comment": "// CAUTION: CR-workflow.md missing, needs development",
+        "existing": ["review-loop.md"],
+        "required": ["CR-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["code-reviewer.md"],
+        "review_templates": ["review_checklist.md", "security_checklist.md"]
+      },
+      "scripts": {
+        "review": ["code_review", "security_scan"],
+        "feedback": ["log_feedback", "create_feedback"],
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "github", "semgrep"],
+        "analysis_tools": ["sonarqube", "codeql"],
+        "comment": "// Additional analysis tools need integration"
+      },
+      "hooks": {
+        "pre_phase": ["run_tests"],
+        "post_phase": ["log_interaction", "log_feedback"],
+        "validation": ["validate_code_quality"]
+      }
+    },
+    "VALIDATE": {
+      "workflow_files": {
+        "comment": "// CAUTION: VALIDATE-workflow.md missing, needs development",
+        "existing": [],
+        "required": ["VALIDATE-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["requirement-validator.md"],
+        "validation_templates": ["validation_report.md", "compliance_checklist.md"]
+      },
+      "scripts": {
+        "validation": ["validate", "validate_requirements"],
+        "compliance": ["compliance_check"],
+        "comment": "// CAUTION: compliance_check script missing",
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "github"],
+        "validation_tools": ["requirements_tracer", "coverage_analyzer"]
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction"],
+        "validation": ["validate_requirements_coverage"]
+      }
+    },
+    "PR": {
+      "workflow_files": {
+        "comment": "// CAUTION: PR-workflow.md missing, needs development",
+        "existing": [],
+        "required": ["PR-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["product-reviewer.md"],
+        "review_templates": ["product_review_checklist.md"]
+      },
+      "scripts": {
+        "review": ["product_review", "user_acceptance"],
+        "feedback": ["log_feedback", "create_feedback"],
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "github"],
+        "review_tools": ["user_feedback_collector", "business_value_analyzer"]
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction", "log_feedback"],
+        "validation": ["validate_product_requirements"]
+      }
+    },
+    "POLISH": {
+      "workflow_files": {
+        "comment": "// CAUTION: POLISH-workflow.md missing, needs development",
+        "existing": [],
+        "required": ["POLISH-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["ui-polisher.md"],
+        "polish_templates": ["ui_refinement_checklist.md"]
+      },
+      "scripts": {
+        "polish": ["ui_polish_validator", "accessibility_checker"],
+        "comment": "// CAUTION: ui_polish_validator and accessibility_checker scripts missing",
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena"],
+        "polish_tools": ["lighthouse", "axe_accessibility"],
+        "comment": "// UI/UX polish tools need integration"
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction"],
+        "validation": ["validate_ui_polish"]
+      }
+    },
+    "QA": {
+      "workflow_files": {
+        "comment": "// CAUTION: QA-workflow.md missing, needs development",
+        "existing": ["security-testing-validation.md"],
+        "required": ["QA-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["project-qa-agent.md"],
+        "testing_templates": ["test_plan.md", "test_cases.md"]
+      },
+      "scripts": {
+        "testing": ["run_tests", "integration_test_runner", "system_test_validator"],
+        "comment": "// CAUTION: integration_test_runner and system_test_validator scripts missing",
+        "validation": ["validate", "create_regression"],
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["serena", "github", "semgrep"],
+        "testing_tools": ["selenium", "cypress", "playwright"],
+        "performance_tools": ["jmeter", "gatling"]
+      },
+      "hooks": {
+        "pre_phase": ["run_tests"],
+        "post_phase": ["log_interaction", "test_results"],
+        "validation": ["validate_test_coverage"]
+      }
+    },
+    "SEC": {
+      "workflow_files": {
+        "comment": "// CAUTION: SEC-workflow.md missing, needs development",
+        "existing": [
+          "security-integration-framework.md",
+          "security-testing-validation.md",
+          "security-monitoring-alerting.md",
+          "security-framework-deployment-guide.md"
+        ],
+        "required": ["SEC-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["security-architect.md", "incident-response-lead.md"],
+        "security_templates": ["security_assessment.md", "vulnerability_report.md"]
+      },
+      "scripts": {
+        "security": ["security_scan", "vulnerability_assessment"],
+        "monitoring": ["security_monitor", "threat_detection"],
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["semgrep"],
+        "security_tools": ["owasp_zap", "burp_suite", "nessus"],
+        "comment": "// Additional security tools need integration"
+      },
+      "hooks": {
+        "pre_phase": ["security_scan"],
+        "post_phase": ["log_interaction", "security_report"],
+        "validation": ["validate_security_compliance"]
+      }
+    },
+    "DEPLOY": {
+      "workflow_files": {
+        "comment": "// CAUTION: DEPLOY-workflow.md missing, needs development",
+        "existing": [],
+        "required": ["DEPLOY-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["iac-developer.md"],
+        "cloud_templates": ["aws-expert.md", "azure-specialist.md", "gcp-expert.md"],
+        "deployment_templates": ["deployment_checklist.md", "rollback_plan.md"]
+      },
+      "scripts": {
+        "deployment": ["deploy", "rollback", "health_check"],
+        "comment": "// CAUTION: deployment scripts need development",
+        "infrastructure": ["terraform_apply", "ansible_playbook"],
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["github"],
+        "deployment_tools": ["terraform", "ansible", "kubernetes"],
+        "ci_cd": ["jenkins", "github_actions", "gitlab_ci"],
+        "comment": "// CI/CD integrations need development"
+      },
+      "hooks": {
+        "pre_phase": ["validate_deployment_readiness"],
+        "post_phase": ["log_interaction", "deployment_notification"],
+        "validation": ["health_check", "smoke_test"]
+      }
+    },
+    "OPS": {
+      "workflow_files": {
+        "comment": "// CAUTION: OPS-workflow.md missing, needs development",
+        "existing": [],
+        "required": ["OPS-workflow.md"]
+      },
+      "templates": {
+        "agent_templates": ["coordinator.md", "compliance-officer.md"],
+        "ops_templates": ["runbook.md", "incident_response.md"],
+        "comment": "// CAUTION: SRE and operations templates missing"
+      },
+      "scripts": {
+        "monitoring": ["monitor", "alert_handler", "incident_response"],
+        "comment": "// CAUTION: operations scripts need development",
+        "maintenance": ["backup", "restore", "update"],
+        "state": ["check_state", "update_state"]
+      },
+      "tools": {
+        "mcp_servers": ["github"],
+        "monitoring_tools": ["datadog", "new_relic", "prometheus"],
+        "incident_tools": ["pagerduty", "opsgenie"],
+        "comment": "// Monitoring integrations need development"
+      },
+      "hooks": {
+        "pre_phase": [],
+        "post_phase": ["log_interaction"],
+        "alerts": ["incident_trigger", "escalation_handler"]
+      }
+    }
+  }
+}
+}
