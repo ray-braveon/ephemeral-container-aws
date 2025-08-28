@@ -1,0 +1,23 @@
+#!/bin/bash
+# Quick access to Claude tools from project
+
+CLAUDE_SCRIPTS="${HOME}/.claude/scripts"
+COMMAND="$1"
+shift
+
+if [[ -z "$COMMAND" ]]; then
+    echo "Usage: .claude/workflow <command> [args]"
+    echo ""
+    echo "Available commands:"
+    ls -1 "$CLAUDE_SCRIPTS" | sed 's/^/  - /'
+    exit 0
+fi
+
+if [[ -x "${CLAUDE_SCRIPTS}/${COMMAND}" ]]; then
+    export CLAUDE_PROJECT="$(dirname "$(readlink -f "$0")" | sed 's/\/.claude$//')"
+    exec "${CLAUDE_SCRIPTS}/${COMMAND}" "$@"
+else
+    echo "❌ Unknown command: $COMMAND"
+    echo "Run '.claude/workflow' for available commands"
+    exit 1
+fi

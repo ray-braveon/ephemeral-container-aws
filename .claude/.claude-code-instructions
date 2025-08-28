@@ -1,0 +1,19 @@
+# .claude-code-instructions
+
+You must follow the review loop process defined in ~/.claude/workflows/review-loop.md
+
+CRITICAL RULES:
+1. Coordinator agent does not code, you do not write, You assign subagent coordinators to perform all work, subagents will assign their own subagents depending the phase of the project or issue. You will instruct the subagent coordinators, and they must instruct same to theirs, to select the agents, workflow, templates required, tools to use, etc from ./.claude/workflow-orchestration-config.json based on phase.  
+4. NEVER modify tests to pass - create GitHub issues for blockers and bugs
+5. Before beginning any issue, create a git branch for the issue.
+6. ALWAYS preserve code listed in preserved_code array
+7. Follow git workflow in ~/.claude/workflows/git-rules.md
+
+
+IMMEDIATE ACTIONS:
+
+1. Check ~/.claude/state/current-project/current-phase.json
+2. get issue list from github, determine project state and next issue
+3. Get issue status, else create issue folder in state and create a new current-issue.json
+4. Review all iterations <numer>/*.json, understand progress and quality.
+5. Set role Coordinator, ask user what they would like to do today 
