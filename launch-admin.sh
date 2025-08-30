@@ -1,7 +1,7 @@
 #!/bin/bash
-# launch-admin.sh - Main orchestrator for ephemeral AWS container system
-# Issue #1: AWS Prerequisites and IAM Setup
-# Version: 1.0.1
+# launch-admin.sh - Main launcher for Ephemeral AWS Container System
+# Issue #4: Core Launch Script Implementation  
+# Version: 2.0.0 - Full launch functionality
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -280,11 +280,11 @@ main() {
     fi
     
     # Determine phases to run
-    local total_phases=4
+    local total_phases=5  # Now includes spot instance launch
     if [[ "${ssh_only}" == "true" ]]; then
         total_phases=1
     elif [[ "${skip_prerequisites}" == "true" ]]; then
-        total_phases=3
+        total_phases=4  # Skip prereqs but include spot launch
     fi
     
     local current_phase=1
@@ -421,9 +421,17 @@ main() {
         echo
         echo "Next steps:"
         echo "  ${GREEN}${CHECKMARK}${NC} AWS prerequisites complete"
-        echo "  ${CYAN}→${NC} Ready for Phase 2: Spot instance launch script implementation"
-        echo "  ${CYAN}→${NC} Use configured SSH key for secure connections"
-        echo "  ${CYAN}→${NC} Security groups will auto-update with your current IP"
+        echo "  ${CYAN}→${NC} Launching spot instance..."
+        
+        # Phase 5: Launch spot instance and connect
+        show_phase_progress 5 5 "Spot Launch" "Launching instance and establishing SSH connection"
+        
+        if ! "${SCRIPTS_DIR}/launch-spot.sh" 2>&1 | tee -a "${LOG_FILE}"; then
+            log_error "Spot instance launch failed"
+            exit 1
+        fi
+        
+        log_success "Spot instance connected successfully"
     fi
     
     # Restore output if quiet mode
