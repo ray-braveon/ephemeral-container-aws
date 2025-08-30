@@ -1,10 +1,13 @@
 #!/bin/bash
 # generate-ssh-keys.sh - Generate and manage SSH key pairs for EC2
-# Issue #1: AWS Prerequisites and IAM Setup
-# Version: 1.0.1
+# Issue #3: Enhanced SSH Key Management with Security Fixes
+# Version: 2.0.0
 
 set -euo pipefail
 IFS=$'\n\t'
+
+# Set secure umask to prevent race conditions
+umask 077
 
 # Configuration
 readonly KEY_NAME="ephemeral-admin-key"
@@ -31,6 +34,55 @@ log_warn() {
     echo -e "  ${YELLOW}⚠${NC} $*"
 }
 
+error_exit() {
+    echo -e "  ${NC}ERROR: $*" >&2
+    exit 1
+}
+
+# Input validation to prevent command injection
+validate_key_name() {
+    local key_name="$1"
+    
+    # Check for empty input
+    if [[ -z "${key_name}" ]]; then
+        error_exit "Key name cannot be empty"
+    fi
+    
+    # Validate key name format (alphanumeric, dash, underscore only)
+    if [[ ! "${key_name}" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+        error_exit "Invalid key name format. Only alphanumeric, dash, and underscore allowed: ${key_name}"
+    fi
+    
+    # Check for dangerous shell characters
+    if [[ "${key_name}" =~ [\$\`\;\"\'\'\|\&\>\<\(\)\{\}\[\]] ]]; then
+        error_exit "Key name contains dangerous shell characters: ${key_name}"
+    fi
+    
+    log_info "Key name validation passed: ${key_name}"
+}
+
+# AWS credential validation
+validate_aws_credentials() {
+    log_info "Validating AWS credentials..."
+    
+    # Check AWS CLI availability
+    if ! command -v aws >/dev/null 2>&1; then
+        error_exit "AWS CLI not found. Please install AWS CLI first."
+    fi
+    
+    # Verify credentials are configured
+    if ! aws sts get-caller-identity &>/dev/null; then
+        error_exit "AWS credentials not configured or invalid. Run 'aws configure' first."
+    fi
+    
+    # Check required permissions
+    if ! aws ec2 describe-key-pairs --region "${REGION}" &>/dev/null; then
+        log_warn "May lack EC2 permissions. Continuing..."
+    fi
+    
+    log_success "AWS credentials validated"
+}
+
 # Check if local key exists
 check_local_key_exists() {
     [[ -f "${KEY_PATH}" && -f "${KEY_PATH}.pub" ]]
@@ -45,15 +97,21 @@ check_aws_key_exists() {
 
 # Generate new SSH key pair
 generate_ssh_key() {
+    # Validate key name to prevent injection
+    validate_key_name "${KEY_NAME}"
+    
     log_info "Generating new SSH key pair"
     
     # Generate key with no passphrase for automation
-    ssh-keygen -t "${KEY_ALGORITHM}" \
+    # Use printf to safely pass comment, preventing command injection
+    if ! ssh-keygen -t "${KEY_ALGORITHM}" \
         -b "${KEY_SIZE}" \
         -f "${KEY_PATH}" \
         -N "" \
-        -C "${KEY_NAME}@ephemeral-admin" \
-        -q
+        -C "$(printf '%s@ephemeral-admin' "${KEY_NAME}")" \
+        -q; then
+        error_exit "Failed to generate SSH key"
+    fi
     
     # Set correct permissions
     chmod 600 "${KEY_PATH}"
@@ -98,6 +156,9 @@ validate_key_integrity() {
 
 # Import key to AWS
 import_key_to_aws() {
+    # Validate key name before AWS operations
+    validate_key_name "${KEY_NAME}"
+    
     log_info "Importing public key to AWS EC2"
     
     # Check if key already exists in AWS
@@ -122,11 +183,13 @@ import_key_to_aws() {
         else
             log_warn "AWS key doesn't match local key, updating..."
             
-            # Delete old key
-            aws ec2 delete-key-pair \
+            # Delete old key with error handling
+            if ! aws ec2 delete-key-pair \
                 --key-name "${KEY_NAME}" \
                 --region "${REGION}" \
-                --output text > /dev/null
+                --output text > /dev/null; then
+                log_warn "Failed to delete old key, continuing..."
+            fi
         fi
     fi
     
@@ -134,12 +197,14 @@ import_key_to_aws() {
     local public_key_material
     public_key_material=$(cat "${KEY_PATH}.pub")
     
-    aws ec2 import-key-pair \
+    if ! aws ec2 import-key-pair \
         --key-name "${KEY_NAME}" \
         --public-key-material "${public_key_material}" \
         --region "${REGION}" \
         --tag-specifications "ResourceType=key-pair,Tags=[{Key=Project,Value=ephemeral-container-claude},{Key=Purpose,Value=ssh-access}]" \
-        --output text > /dev/null
+        --output text > /dev/null; then
+        error_exit "Failed to import SSH key to AWS"
+    fi
     
     log_success "Imported key to AWS: ${KEY_NAME}"
 }
@@ -182,6 +247,9 @@ check_key_age() {
 main() {
     echo "=== SSH Key Management ==="
     echo
+    
+    # Validate AWS credentials first
+    validate_aws_credentials || exit 1
     
     # Check if keys need generation
     if check_local_key_exists; then
